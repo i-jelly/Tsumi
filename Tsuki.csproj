@@ -6,16 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mirai-CSharp" Version="1.0.1.5" />
     <PackageReference Include="MySql.Data" Version="8.0.21" />
     <PackageReference Include="StackExchange.Redis" Version="2.1.58" />
     <PackageReference Include="System.Net.WebSockets" Version="4.3.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Interface\" />
-    <Folder Include="Model\" />
-    <Folder Include="Controller\" />
-    <Folder Include="Handler\" />
+    <PackageReference Include="Unity" Version="5.11.7" />
   </ItemGroup>
 
 </Project>
