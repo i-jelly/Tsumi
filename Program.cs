@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 using Mirai_CSharp;
 using Mirai_CSharp.Models;
 using Tsuki.Controller;
 
 namespace Tsuki
 {
-    public static class Program
+    public class Program
     {
+
         public static async Task Main(string[] args)
         {
             Console.WriteLine("Start\n");
+
             MiraiHttpSessionOptions options = new MiraiHttpSessionOptions("127.0.0.1", 23333, "1145141919810");
             await using MiraiHttpSession session = new MiraiHttpSession();
 
