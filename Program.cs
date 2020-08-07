@@ -12,7 +12,7 @@ namespace Tsuki
 
         public static async Task Main(string[] args)
         {
-            Console.WriteLine("Start\n");
+            Console.WriteLine("Start");
 
             MiraiHttpSessionOptions options = new MiraiHttpSessionOptions("127.0.0.1", 23333, "1145141919810");
             await using MiraiHttpSession session = new MiraiHttpSession();
