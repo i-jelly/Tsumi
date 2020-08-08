@@ -17,6 +17,8 @@ namespace Tsuki.Controller
             FileInfo[] Files = new DirectoryInfo(@"C:\Users\Mythra\Desktop\image\pixiv\").GetFiles();
 
             await new Image().SendPictureAsync(session, e, @"C:\Users\Mythra\Desktop\image\pixiv\" + Files[new Random().Next(Files.Length)].Name);
+
+            Log.Logger($"=>, SendEroImageAtGroup{e.Sender.Group.Name},WithOrderFrom@{e.Sender.Name}","M");
         }
     }
 }

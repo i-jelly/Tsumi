@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Timers;
 using Mirai_CSharp;
@@ -25,12 +26,19 @@ namespace Tsuki.Controller
             public IMessageBase[] LastSend;
             public IMessageBase[] LastMsg;
         }
-
+        /// <summary>
+        /// 主动发送信息的群号
+        /// </summary>
         private static readonly long[] ListenGroup = { 671735106, 209010051 };
+        /// <summary>
+        /// 模糊匹配使用正则表达式作为输入
+        /// </summary>
+        private static readonly String[] FuzCommandList = { @"真理.*是我老婆", };
         private MiraiHttpSession SessionCache;
 
         public UnityContainer AtCommand = new UnityContainer();
         public UnityContainer SimpleCommand = new UnityContainer();
+        public UnityContainer FuzCommand = new UnityContainer();
         public bool isInited = false;
         public Repeator Tmp = new Repeator();
         public Dictionary<long,Repeator> Group = new Dictionary<long, Repeator>();
@@ -60,7 +68,9 @@ namespace Tsuki.Controller
                 SimpleCommand.RegisterType<I群消息处理接口, 来点好康的>("来点好康的");
                 SimpleCommand.RegisterType<I群消息处理接口, 随机回复>("随机回复");
 
-                AtCommand.RegisterType<I群消息处理接口, Test>("Test");
+                AtCommand.RegisterType<I群消息处理接口, 啪啪啪>("啪啪啪");
+
+                FuzCommand.RegisterType<I群消息处理接口, 模糊命令测试>(@"真理.*是我老婆");
             }
             if (!Group.ContainsKey(e.Sender.Group.Id))
             {
@@ -90,7 +100,9 @@ namespace Tsuki.Controller
             
             Group[_SenderGroup].AccountID = e.Sender.Id;
 
-            Log.Logger(Message.GetFirstPlainMessage(e.Chain), "N");
+            Log.Logger($"<=,ReciviedMessage'{Message.GetFirstPlainMessage(e.Chain)}'From{e.Sender.Group.Name}", "N");
+
+            String FirstPlainMessage = Message.GetFirstPlainMessage(e.Chain).ToString().Trim();
 
             //无意义的随机回复
             if (new Random().Next(100) > 94)
@@ -101,19 +113,30 @@ namespace Tsuki.Controller
             //含有AT的命令处理
             if (Message.ContainsAtMe(e.Chain))
             {
-                if (AtCommand.IsRegistered<I群消息处理接口>(Message.GetFirstPlainMessage(e.Chain).ToString().Trim()))
+                if (AtCommand.IsRegistered<I群消息处理接口>(FirstPlainMessage))
                 {
-                    await AtCommand.Resolve<I群消息处理接口>(Message.GetFirstPlainMessage(e.Chain).ToString().Trim()).Handler(session, e);
+                    await AtCommand.Resolve<I群消息处理接口>(FirstPlainMessage).Handler(session, e);
                     return true;
                 }
             }
 
             //普通无AT命令处理
-            if (SimpleCommand.IsRegistered<I群消息处理接口>(Message.GetFirstPlainMessage(e.Chain).ToString().Trim()))
+            if (SimpleCommand.IsRegistered<I群消息处理接口>(FirstPlainMessage))
             {
-                await SimpleCommand.Resolve<I群消息处理接口>(Message.GetFirstPlainMessage(e.Chain).ToString().Trim()).Handler(session,e);
+                await SimpleCommand.Resolve<I群消息处理接口>(FirstPlainMessage).Handler(session,e);
                 return true;
             }
+
+            //普通语句进行模糊匹配处理
+            foreach(var pattern in FuzCommandList)
+            {
+                if(Regex.Matches(FirstPlainMessage, pattern).Count > 0)
+                {
+                    await FuzCommand.Resolve<I群消息处理接口>(pattern).Handler(session,e);
+                    return true;
+                }
+            }
+
             Group[_SenderGroup].LastMsg = _;
             return true;
         }
@@ -121,6 +144,7 @@ namespace Tsuki.Controller
         /*******************************************************************************************/
         /// <summary>
         /// 群消息的主动发送部分, 发送MQTT消息队列
+        /// 每秒调用
         /// </summary>
         /// <param name="source"></param>
         /// <param name="e"></param>

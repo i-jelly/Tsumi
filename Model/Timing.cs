@@ -27,10 +27,8 @@ namespace Tsuki.Model
             if(T != DateTime.Now.ToLocalTime().Hour)
             {
                 T = DateTime.Now.ToLocalTime().Hour;
-                if(HourTimer != null) HourTimer.Invoke(source,e);
-                if(SecondTimer != null) SecondTimer.Invoke(source, e);
             }
-            
+            if(SecondTimer != null) SecondTimer.Invoke(source, e);
         }
 
         
