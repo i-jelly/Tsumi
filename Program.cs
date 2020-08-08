@@ -14,7 +14,7 @@ namespace Tsuki
         {
             Console.WriteLine("Start");
 
-            MiraiHttpSessionOptions options = new MiraiHttpSessionOptions("127.0.0.1", 23333, "1145141919810");
+            MiraiHttpSessionOptions options = new MiraiHttpSessionOptions("up.kizunaai.top", 23333, "1145141919810");
             await using MiraiHttpSession session = new MiraiHttpSession();
 
             群消息事件 plugin = new 群消息事件();
