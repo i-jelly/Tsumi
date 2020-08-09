@@ -16,7 +16,7 @@ namespace Tsuki.Handler
         {
             FileInfo[] Files = new DirectoryInfo(@"C:\Users\Mythra\Desktop\image\sm\").GetFiles();
 
-            await new Image().SendPictureAsync(session, e, @"C:\Users\Mythra\Desktop\image\sm\" + Files[new Random().Next(Files.Length)].Name);
+            await Image.SendPictureAsync(session, e, @"C:\Users\Mythra\Desktop\image\sm\" + Files[new Random().Next(Files.Length)].Name);
 
             Log.Logger($"=>,SendRandomImageAtGroup{e.Sender.Group.Name}", "M");
         }

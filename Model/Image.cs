@@ -10,12 +10,12 @@ namespace Tsuki.Model
 {
     public class Image
     {
-        public async Task<ImageMessage> UploadPictureAsync(MiraiHttpSession session,String path)
+        public async static Task<ImageMessage> UploadPictureAsync(MiraiHttpSession session,String path)
         {
             return await session.UploadPictureAsync(PictureTarget.Group, path);
         }
 
-        public async Task SendPictureAsync(MiraiHttpSession session, IGroupMessageEventArgs e , String path)
+        public async static Task SendPictureAsync(MiraiHttpSession session, IGroupMessageEventArgs e , String path)
         {
             ImageMessage img = await session.UploadPictureAsync(PictureTarget.Group, path);
             await session.SendGroupMessageAsync(e.Sender.Group.Id, new IMessageBase[]

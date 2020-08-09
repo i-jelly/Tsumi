@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Native.Tool\SQLite\**" />
+    <EmbeddedResource Remove="Native.Tool\SQLite\**" />
+    <None Remove="Native.Tool\SQLite\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="M2Mqtt" Version="4.3.0" />
     <PackageReference Include="Mirai-CSharp" Version="1.0.1.5" />
     <PackageReference Include="MySql.Data" Version="8.0.21" />

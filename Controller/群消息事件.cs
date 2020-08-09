@@ -33,7 +33,7 @@ namespace Tsuki.Controller
         /// <summary>
         /// 模糊匹配使用正则表达式作为输入
         /// </summary>
-        private static readonly String[] FuzCommandList = { @"真理.*是我老婆", };
+        private static readonly String[] FuzCommandList = { /*@"真理.*是我老婆",*/@"啊{5,}" };
         private MiraiHttpSession SessionCache;
 
         public UnityContainer AtCommand = new UnityContainer();
@@ -67,10 +67,12 @@ namespace Tsuki.Controller
                 MQTT.Init();
                 SimpleCommand.RegisterType<I群消息处理接口, 来点好康的>("来点好康的");
                 SimpleCommand.RegisterType<I群消息处理接口, 随机回复>("随机回复");
+                SimpleCommand.RegisterType<I群消息处理接口, 点歌>("点歌");
 
                 AtCommand.RegisterType<I群消息处理接口, 啪啪啪>("啪啪啪");
 
-                FuzCommand.RegisterType<I群消息处理接口, 模糊命令测试>(@"真理.*是我老婆");
+                //FuzCommand.RegisterType<I群消息处理接口, 模糊命令测试>(@"真理.*是我老婆");
+                FuzCommand.RegisterType<I群消息处理接口, 啊啊啊啊啊>(@"啊{5,}");
             }
             if (!Group.ContainsKey(e.Sender.Group.Id))
             {
@@ -103,13 +105,11 @@ namespace Tsuki.Controller
             Log.Logger($"<=,ReciviedMessage'{Message.GetFirstPlainMessage(e.Chain)}'From{e.Sender.Group.Name}", "N");
 
             String FirstPlainMessage = Message.GetFirstPlainMessage(e.Chain).ToString().Trim();
-
-            //无意义的随机回复
-            if (new Random().Next(100) > 94)
+            if (FirstPlainMessage.Contains("#") && FirstPlainMessage.IndexOf("#") > 0)
             {
-                await SimpleCommand.Resolve<I群消息处理接口>("随机回复").Handler(session,e);
-                return true;
+                FirstPlainMessage = FirstPlainMessage.Substring(0, FirstPlainMessage.IndexOf("#"));
             }
+
             //含有AT的命令处理
             if (Message.ContainsAtMe(e.Chain))
             {
@@ -118,6 +118,7 @@ namespace Tsuki.Controller
                     await AtCommand.Resolve<I群消息处理接口>(FirstPlainMessage).Handler(session, e);
                     return true;
                 }
+                await Image.SendPictureAsync(session, e, @"C:\Users\Mythra\Desktop\image\sm\EYHQ.jpg");
             }
 
             //普通无AT命令处理
@@ -135,6 +136,13 @@ namespace Tsuki.Controller
                     await FuzCommand.Resolve<I群消息处理接口>(pattern).Handler(session,e);
                     return true;
                 }
+            }
+            
+            //无意义的随机回复
+            if (new Random().Next(100) > 94)
+            {
+                await SimpleCommand.Resolve<I群消息处理接口>("随机回复").Handler(session,e);
+                return true;
             }
 
             Group[_SenderGroup].LastMsg = _;

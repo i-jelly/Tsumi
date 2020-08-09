@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Tsuki.Model
 {
-    class 数据库模型
+    class HTTP
     {
     }
 }
