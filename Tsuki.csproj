@@ -3,6 +3,11 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Version>0.0.1</Version>
+    <Authors>中珂院的炼铜工坊(Xenohoshi,admin@i-jelly.com)</Authors>
+    <Company>真理好大(orua.cn)</Company>
+    <Product>Tsumi.QQBot.Rev4</Product>
+    <Copyright>©真理好大,2020-</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

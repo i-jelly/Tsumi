@@ -33,7 +33,7 @@ namespace Tsuki.Controller
         /// <summary>
         /// 模糊匹配使用正则表达式作为输入
         /// </summary>
-        private static readonly String[] FuzCommandList = { /*@"真理.*是我老婆",*/@"啊{5,}" };
+        private static readonly String[] FuzCommandList = { @"全都要", @"啊{5,}",@"真理" };
         private MiraiHttpSession SessionCache;
 
         public UnityContainer AtCommand = new UnityContainer();
@@ -68,11 +68,14 @@ namespace Tsuki.Controller
                 SimpleCommand.RegisterType<I群消息处理接口, 来点好康的>("来点好康的");
                 SimpleCommand.RegisterType<I群消息处理接口, 随机回复>("随机回复");
                 SimpleCommand.RegisterType<I群消息处理接口, 点歌>("点歌");
+                SimpleCommand.RegisterType<I群消息处理接口, 真理涩图>("真理涩图");
 
                 AtCommand.RegisterType<I群消息处理接口, 啪啪啪>("啪啪啪");
 
-                //FuzCommand.RegisterType<I群消息处理接口, 模糊命令测试>(@"真理.*是我老婆");
+                FuzCommand.RegisterType<I群消息处理接口, 西园寺世界>(@"全都要");
                 FuzCommand.RegisterType<I群消息处理接口, 啊啊啊啊啊>(@"啊{5,}");
+                FuzCommand.RegisterType<I群消息处理接口, 真理>(@"真理");
+
             }
             if (!Group.ContainsKey(e.Sender.Group.Id))
             {
