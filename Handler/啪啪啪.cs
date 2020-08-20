@@ -9,7 +9,7 @@ using Tsuki.Model;
 
 namespace Tsuki.Handler
 {
-    class 啪啪啪 : I群消息处理接口
+    public class 啪啪啪 : I群消息处理接口
     {
         public async Task Handler(MiraiHttpSession session, IGroupMessageEventArgs e)
         {

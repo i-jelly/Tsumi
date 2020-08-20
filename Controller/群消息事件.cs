@@ -29,7 +29,7 @@ namespace Tsuki.Controller
         /// <summary>
         /// 主动发送信息的群号
         /// </summary>
-        private static readonly long[] ListenGroup = { 671735106, 209010051 };
+        private static readonly long[] ListenGroup = { 671735106, };
         /// <summary>
         /// 模糊匹配使用正则表达式作为输入
         /// </summary>
@@ -69,6 +69,9 @@ namespace Tsuki.Controller
                 SimpleCommand.RegisterType<I群消息处理接口, 随机回复>("随机回复");
                 SimpleCommand.RegisterType<I群消息处理接口, 点歌>("点歌");
                 SimpleCommand.RegisterType<I群消息处理接口, 真理涩图>("真理涩图");
+                SimpleCommand.RegisterType<I群消息处理接口, 以图搜图>("以图搜图");
+                SimpleCommand.RegisterType<I群消息处理接口, 切噜>("切噜");
+                SimpleCommand.RegisterType<I群消息处理接口, 切噜一下>("切噜一下");
 
                 AtCommand.RegisterType<I群消息处理接口, 啪啪啪>("啪啪啪");
 

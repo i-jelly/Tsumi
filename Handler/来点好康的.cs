@@ -12,11 +12,13 @@ namespace Tsuki.Controller
 {
     public class 来点好康的 : I群消息处理接口
     {
+        Random rg = new Random();
+
         public async Task Handler(MiraiHttpSession session,IGroupMessageEventArgs e)
         {
             FileInfo[] Files = new DirectoryInfo(@"C:\Users\Mythra\Desktop\image\pixiv\").GetFiles();
 
-            await Image.SendPictureAsync(session, e, @"C:\Users\Mythra\Desktop\image\pixiv\" + Files[new Random().Next(Files.Length)].Name);
+            await Image.SendPictureAsync(session, e, @"C:\Users\Mythra\Desktop\image\pixiv\" + Files[rg.Next(Files.Length)].Name);
 
             Log.Logger($"=>, SendEroImageAtGroup{e.Sender.Group.Name},WithOrderFrom@{e.Sender.Name}","M");
         }

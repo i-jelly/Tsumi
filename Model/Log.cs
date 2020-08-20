@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Mirai_CSharp;
+using Mirai_CSharp.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Tsuki.Model
 {
@@ -14,6 +17,21 @@ namespace Tsuki.Model
         public static void Logger(Object log, String level)
         {
             Console.WriteLine($"{DateTime.Now.ToLocalTime()},[{level}],{log}");
+        }
+
+        /// <summary>
+        /// 向群发送Log信息而不是在Console里
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="e"></param>
+        /// <param name="Message"></param>
+        /// <returns></returns>
+        public static async Task LogToGroup(MiraiHttpSession session, IGroupMessageEventArgs e, String Message)
+        {
+            await session.SendGroupMessageAsync(e.Sender.Group.Id, new IMessageBase[]
+            {
+                new PlainMessage(Message),
+            });
         }
     }
 }

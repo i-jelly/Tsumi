@@ -18,7 +18,9 @@ namespace Tsuki
             await using MiraiHttpSession session = new MiraiHttpSession();
 
             群消息事件 plugin = new 群消息事件();
+            机器人登录事件 Login = new 机器人登录事件();
             session.AddPlugin(plugin);
+            session.AddPlugin(Login);
 
             await session.ConnectAsync(options, 3178223002);
             while (true)

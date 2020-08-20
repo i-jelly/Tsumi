@@ -1,9 +1,11 @@
 ﻿using Mirai_CSharp.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 
 namespace Tsuki.Model
 {
@@ -73,6 +75,34 @@ namespace Tsuki.Model
                 if (Instance.Type == "Plain") return (PlainMessage)Instance;
             }
             return new PlainMessage("");
+        }
+
+        /// <summary>
+        /// 消息链中是否含有Image消息
+        /// </summary>
+        /// <param name="chain"></param>
+        /// <returns></returns>
+        public static bool ContainsImage(IMessageBase[] chain)
+        {
+            foreach(var Instance in chain)
+            {
+                if (Instance.Type == "Image") return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 返回链中第一个ImageMessage，否则throw错误
+        /// </summary>
+        /// <param name="chain"></param>
+        /// <returns><see cref="ImageMessage"/></returns>
+        public static ImageMessage GetFirstImageMessage(IMessageBase[] chain)
+        {
+            foreach(var Instance in chain)
+            {
+                if (Instance.Type == "Image") return (ImageMessage)Instance;
+            }
+            throw new BadImageFormatException();
         }
     }
 }
