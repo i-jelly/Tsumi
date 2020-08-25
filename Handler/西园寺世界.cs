@@ -22,6 +22,8 @@ namespace Tsuki.Handler
             if(new Random().Next(100) > 24)
             {
                 await Image.SendPictureAsync(session, e, @"C:\Users\Mythra\Desktop\image\sp\DVR1.jpg");
+
+                Log.Logger($"=>, SendSairenjiAtGroup#{e.Sender.Group.Name}#,WithOrderFrom@{e.Sender.Name}", "M");
             }
         }
     }

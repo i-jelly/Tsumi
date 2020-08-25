@@ -9,13 +9,14 @@ using Tsuki.Model;
 
 namespace Tsuki.Handler
 {
-    public class 点歌 : I群消息处理接口
+    public class 涩图 : I群消息处理接口
     {
+        private Random rd = new Random();
         public async Task Handler(MiraiHttpSession session, IGroupMessageEventArgs e)
         {
-            await NeteaseMusic.SendSong(session, e);
-
-            Log.Logger($"=>, SendMusicSharePAtGroup#{e.Sender.Group.Name}#,WithOrderFrom@{e.Sender.Name}", "M");
+            if (rd.Next(100) > 32) return;
+            await Log.LogToGroup(session, e, "涩你🐎呢满脑子天天涩图");
+            Log.Logger($"=>, SendEroFuckMsgAtGroup#{e.Sender.Group.Name}#,WithOrderFrom@{e.Sender.Name}", "M");
         }
     }
 }

@@ -91,6 +91,7 @@ namespace Tsuki.Handler
                     new ImageMessage("",_t.Preview,""),
                     new PlainMessage($"置信度:{_t.P}\n{_t.Url}{_t.Title}")
                 }) ;
+                Log.Logger($"=>, SendImageAtGroup{e.Sender.Group.Name},WithOrderFrom@{e.Sender.Name}", "M");
             }
             catch
             {

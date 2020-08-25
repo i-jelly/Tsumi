@@ -18,7 +18,7 @@ namespace Tsuki.Handler
 
             await Image.SendPictureAsync(session, e, @"C:\Users\Mythra\Desktop\image\sm\" + Files[new Random().Next(Files.Length)].Name);
 
-            Log.Logger($"=>,SendRandomImageAtGroup{e.Sender.Group.Name}", "M");
+            Log.Logger($"=>,SendRandomImageAtGroup#{e.Sender.Group.Name}#", "M");
         }
     }
 }

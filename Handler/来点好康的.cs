@@ -16,11 +16,17 @@ namespace Tsuki.Controller
 
         public async Task Handler(MiraiHttpSession session,IGroupMessageEventArgs e)
         {
+            if (e.Sender.Group.Id == 681344436 && rg.Next(100) > 70)
+            {
+
+                await Image.SendPictureAsync(session, e, @"C:\Users\Mythra\Desktop\image\sp\43.gif");
+                return;
+            }
             FileInfo[] Files = new DirectoryInfo(@"C:\Users\Mythra\Desktop\image\pixiv\").GetFiles();
 
             await Image.SendPictureAsync(session, e, @"C:\Users\Mythra\Desktop\image\pixiv\" + Files[rg.Next(Files.Length)].Name);
 
-            Log.Logger($"=>, SendEroImageAtGroup{e.Sender.Group.Name},WithOrderFrom@{e.Sender.Name}","M");
+            Log.Logger($"=>, SendEroImageAtGroup#{e.Sender.Group.Name}#,WithOrderFrom@{e.Sender.Name}","M");
         }
     }
 }

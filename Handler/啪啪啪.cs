@@ -18,7 +18,7 @@ namespace Tsuki.Handler
                 await session.MuteAsync(e.Sender.Id, e.Sender.Group.Id, TimeSpan.FromMinutes(1));
                 await session.SendGroupMessageAsync(e.Sender.Group.Id, new IMessageBase[]
                 {
-                    new AtMessage(e.Sender.Id,e.Sender.Name),
+                    new AtMessage(e.Sender.Id),
                     new PlainMessage("憨批")
                 });
             }
@@ -29,7 +29,7 @@ namespace Tsuki.Handler
                     new PlainMessage(@"有绿帽子就把你🐎都扬了")
                 });
             }
-            Log.Logger($"=>,Mute@{e.Sender.Name}#AtGroup#{e.Sender.Group.Name}", "M");
+            Log.Logger($"=>,Mute@{e.Sender.Name}AtGroup#{e.Sender.Group.Name}#", "M");
         }
     }
 }

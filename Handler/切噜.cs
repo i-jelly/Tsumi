@@ -42,11 +42,13 @@ namespace Tsuki.Handler
                     return Cheru2Word(m.Groups[0].Value);
                 });
                 await Log.LogToGroup(session,e,$"你的切噜是:{result}");
+                Log.Logger($"=>, SendQieluAtGroup#{e.Sender.Group.Name}#,WithOrderFrom@{e.Sender.Name}", "M");
                 return;
             }
             catch
             {
                 await Log.LogToGroup(session, e, ErrMsg);
+                Log.Logger($"=>, SendQieluArrAtGroup#{e.Sender.Group.Name}#,WithOrderFrom@{e.Sender.Name}", "M");
                 return;
             }
         }

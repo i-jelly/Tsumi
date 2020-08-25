@@ -23,6 +23,8 @@ namespace Tsuki.Handler
             if(new Random().Next(100) > 49)
             {
                 await Image.SendPictureAsync(session, e, @"C:\Users\Mythra\Desktop\image\sp\43.gif");
+
+                Log.Logger($"=>, SendShitPicAtGroup#{e.Sender.Group.Name}#,WithOrderFrom@{e.Sender.Name}", "M");
             }
         }
     }
