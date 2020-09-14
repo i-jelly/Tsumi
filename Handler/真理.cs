@@ -12,7 +12,7 @@ namespace Tsuki.Handler
     {
         public async Task Handler(MiraiHttpSession session, IGroupMessageEventArgs e)
         {
-            if (new Random().Next(100) > 2) return;
+            if (new Random().Next(100) > 80) return;
 
             await session.SendGroupMessageAsync(e.Sender.Group.Id, new IMessageBase[]
             {

@@ -13,6 +13,11 @@ namespace Tsuki.Handler
     {
         public async Task Handler(MiraiHttpSession session, IGroupMessageEventArgs e)
         {
+            if(e.Sender.Id == 760658265)
+            {
+                await Log.LogToGroup(session, e, "啊♂啊♂啊");
+                return;
+            }
             try
             {
                 await session.MuteAsync(e.Sender.Id, e.Sender.Group.Id, TimeSpan.FromMinutes(1));

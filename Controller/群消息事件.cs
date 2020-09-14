@@ -29,11 +29,11 @@ namespace Tsuki.Controller
         /// <summary>
         /// 主动发送信息的群号
         /// </summary>
-        private static readonly long[] ListenGroup = { 671735106};
+        private static readonly long[] ListenGroup = { 671735106, 579934839};
         /// <summary>
         /// 模糊匹配使用正则表达式作为输入
         /// </summary>
-        private static readonly String[] FuzCommandList = { @"全都要", @"啊{5,}",@"真理",@"涩图" };
+        private static readonly String[] FuzCommandList = { @"全都要", @"啊{5,}",@"真理",@"涩图",@"冲了",@"社保",@"射爆"};
         private MiraiHttpSession SessionCache;
 
         public UnityContainer AtCommand = new UnityContainer();
@@ -81,6 +81,9 @@ namespace Tsuki.Controller
                 FuzCommand.RegisterType<I群消息处理接口, 啊啊啊啊啊>(@"啊{5,}");
                 FuzCommand.RegisterType<I群消息处理接口, 真理>(@"真理");
                 FuzCommand.RegisterType<I群消息处理接口, 涩图>(@"涩图");
+                FuzCommand.RegisterType<I群消息处理接口, 嘴里>(@"冲了");
+                FuzCommand.RegisterType<I群消息处理接口, 嘴里>(@"射爆");
+                FuzCommand.RegisterType<I群消息处理接口, 嘴里>(@"社保");
 
             }
             if (!Group.ContainsKey(e.Sender.Group.Id))
