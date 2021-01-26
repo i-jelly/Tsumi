@@ -38,11 +38,13 @@ namespace Tsuki.Handler
                 return;
             }
             Reply _t = new Reply();
+            WebProxy proxy = new WebProxy("127.0.0.1", 1081);
             String Url = Message.GetFirstImageMessage(e.Chain).Url;
             HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(
                     @"http://saucenao.com/search.php?output_type=2&numres=1&minsim=80&db=999&url=" + Url  + "&api_key=" + apiKey
                 ) ;
             req.Method = "GET";
+            req.Proxy = proxy;
             try
             {
                 String raw;

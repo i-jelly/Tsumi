@@ -25,11 +25,12 @@ namespace Tsuki.Controller
             public long AccountID;
             public IMessageBase[] LastSend;
             public IMessageBase[] LastMsg;
+            public List<long> ShabiList;
         }
         /// <summary>
         /// 主动发送信息的群号
-        /// </summary>
-        private static readonly long[] ListenGroup = { 671735106, 579934839};
+       /// </summary>
+        private static readonly long[] ListenGroup = { 681344436,671735106, 579934839, 690847678,1081164773, 963031509 };
         /// <summary>
         /// 模糊匹配使用正则表达式作为输入
         /// </summary>
@@ -74,8 +75,11 @@ namespace Tsuki.Controller
                 SimpleCommand.RegisterType<I群消息处理接口, 切噜>("切噜");
                 SimpleCommand.RegisterType<I群消息处理接口, 切噜一下>("切噜一下");
                 SimpleCommand.RegisterType<I群消息处理接口, 这合理吗>("这合理吗");
+                SimpleCommand.RegisterType<I群消息处理接口, 命令测试>("命令测试");
 
                 AtCommand.RegisterType<I群消息处理接口, 啪啪啪>("啪啪啪");
+                AtCommand.RegisterType<I群消息处理接口, 学习套餐>("学习套餐");
+                AtCommand.RegisterType<I群消息处理接口, 安眠套餐>("安眠套餐");
 
                 FuzCommand.RegisterType<I群消息处理接口, 西园寺世界>(@"全都要");
                 FuzCommand.RegisterType<I群消息处理接口, 啊啊啊啊啊>(@"啊{5,}");
@@ -91,9 +95,10 @@ namespace Tsuki.Controller
                 Tmp.AccountID = _SenderID;
                 Tmp.LastMsg = new IMessageBase[] { new PlainMessage("") };
                 Tmp.LastSend = new IMessageBase[] { new PlainMessage("") };
+                Tmp.ShabiList = new List<long>();
                 Group.Add(_SenderGroup, Tmp);
             }
-            //复读机部分
+/****************************************************************************************************/
             List<IMessageBase> _chain = new List<IMessageBase> { };
             foreach (var Instance in e.Chain)
             {
@@ -101,11 +106,40 @@ namespace Tsuki.Controller
             }
 
             IMessageBase[] _ = _chain.ToArray();
+            //风怒复读机部分/优先级比普通复读机高,为防止傻逼触发我不知道的feature
+            
+            if(Group[_SenderGroup].ShabiList.Count() > 0)
+            {
+                if (Group[_SenderGroup].ShabiList.Contains(_SenderID))
+                {
+                    if(Message.GetFirstPlainMessage(e.Chain).ToString().Trim() == "停止风怒")
+                    {
+                        await session.SendGroupMessageAsync(_SenderGroup, new IMessageBase[] 
+                        {
+                            new PlainMessage("滚滚滚"),
+                        });
+                        Group[_SenderGroup].ShabiList.Remove(_SenderID);
+                        return true;
+                    }
+                    await session.SendGroupMessageAsync(_SenderGroup, _);
+                    return true;
+                }
+            }
+            if (Message.GetFirstPlainMessage(e.Chain).ToString().Trim() == "随我复读")
+            {
+                await session.SendGroupMessageAsync(_SenderGroup, new IMessageBase[]
+                {
+                    new PlainMessage("随我复读"),
+                });
+                Group[_SenderGroup].ShabiList.Add(_SenderID);
+                return true;
+            }
+            //复读机部分
             if (!Message.IsTheSameMessageChain(Group[_SenderGroup].LastSend, _))
             {
                 if (Message.IsTheSameMessageChain(Group[_SenderGroup].LastMsg,_) && Group[_SenderGroup].AccountID != _SenderID )
                 {
-                    await session.SendGroupMessageAsync(e.Sender.Group.Id, _);
+                    await session.SendGroupMessageAsync(_SenderGroup, _);
                     Group[_SenderGroup].LastSend = _;
                     return true;
                 }
@@ -114,7 +148,7 @@ namespace Tsuki.Controller
             
             Group[_SenderGroup].AccountID = e.Sender.Id;
 
-            Log.Logger($"<=,ReciviedMessage'{Message.GetFirstPlainMessage(e.Chain)}'From{e.Sender.Group.Name}", "N");
+            Log.Logger($"<=,ReciviedMessage'{Message.GetFirstPlainMessage(e.Chain)}'From{e.Sender.Group.Name}@{e.Sender.Name}#{e.Sender.Id}", "N");
 
             String FirstPlainMessage = Message.GetFirstPlainMessage(e.Chain).ToString().Trim();
             if (FirstPlainMessage.Contains("#") && FirstPlainMessage.IndexOf("#") > 0)
@@ -170,20 +204,28 @@ namespace Tsuki.Controller
         /// <param name="e"></param>
         public async void  OnMQTTMessageRcivied(Object source, ElapsedEventArgs e)
         {
-            if(MQTT.ListenList.Count() > 0)
+            try
             {
-                foreach(var Group in ListenGroup)
+                if(MQTT.ListenList.Count() > 0)
                 {
-                    foreach(var txt in MQTT.ListenList)
+                    foreach(var Group in ListenGroup)
                     {
-                        await SessionCache.SendGroupMessageAsync(Group, new IMessageBase[]
+                        foreach(var txt in MQTT.ListenList)
                         {
-                            new PlainMessage(txt)
-                        }) ;
+                            await SessionCache.SendGroupMessageAsync(Group, new IMessageBase[]
+                            {
+                                new PlainMessage(txt)
+                            }) ;
+                        }
                     }
                 }
+                MQTT.ListenList.Clear();
             }
-            MQTT.ListenList.Clear();
+            catch
+            {
+                Log.Logger("直播提示发送错误一次", "E");
+            }
+            
         }
     }
 }

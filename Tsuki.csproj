@@ -10,6 +10,10 @@
     <Copyright>©真理好大,2020-</Copyright>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Native.Tool\SQLite\**" />
     <EmbeddedResource Remove="Native.Tool\SQLite\**" />
@@ -18,7 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="M2Mqtt" Version="4.3.0" />
-    <PackageReference Include="Mirai-CSharp" Version="1.0.2" />
+    <PackageReference Include="Mirai-CSharp" Version="1.0.1.9" />
     <PackageReference Include="MySql.Data" Version="8.0.21" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="StackExchange.Redis" Version="2.1.58" />
