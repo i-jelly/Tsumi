@@ -12,14 +12,7 @@ namespace Tsuki.Handler
     {
         public async Task Handler(MiraiHttpSession session, IGroupMessageEventArgs e)
         {
-            try
-            {
-                return;
-            }
-            catch
-            {
-                return;
-            }
+            return;
         }
     }
 }

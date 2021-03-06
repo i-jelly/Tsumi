@@ -220,10 +220,12 @@ namespace Tsuki.Controller
                     }
                 }
                 MQTT.ListenList.Clear();
+                return;
             }
             catch
             {
                 Log.Logger("直播提示发送错误一次", "E");
+                return;
             }
             
         }
