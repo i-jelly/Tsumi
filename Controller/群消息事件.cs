@@ -204,29 +204,32 @@ namespace Tsuki.Controller
         /// <param name="e"></param>
         public async void  OnMQTTMessageRcivied(Object source, ElapsedEventArgs e)
         {
-            try
-            {
-                if(MQTT.ListenList.Count() > 0)
+            Task.Run(async () => {
+                List<string> tmp = MQTT.ListenList;
+                try
                 {
-                    foreach(var Group in ListenGroup)
+                    if(tmp.Count() > 0)
                     {
-                        foreach(var txt in MQTT.ListenList)
+                        foreach(var Group in ListenGroup)
                         {
-                            await SessionCache.SendGroupMessageAsync(Group, new IMessageBase[]
+                            foreach(var txt in tmp)
                             {
-                                new PlainMessage(txt)
-                            }) ;
+                                await SessionCache.SendGroupMessageAsync(Group, new IMessageBase[]
+                                {
+                                    new PlainMessage(txt)
+                                }) ;
+                            }
                         }
+                        MQTT.ListenList.Clear();
                     }
+                    return;
                 }
-                MQTT.ListenList.Clear();
-                return;
-            }
-            catch
-            {
-                Log.Logger("直播提示发送错误一次", "E");
-                return;
-            }
+                catch
+                {
+                    Log.Logger("直播提示发送错误一次", "E");
+                    return;
+                }
+            });
             
         }
     }
