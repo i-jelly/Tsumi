@@ -210,9 +210,9 @@ namespace Tsuki.Controller
                 {
                     if(tmp.Count() > 0)
                     {
-                        foreach(var Group in ListenGroup)
+                        foreach(var txt in tmp)
                         {
-                            foreach(var txt in tmp)
+                            foreach(var Group in ListenGroup)
                             {
                                 await SessionCache.SendGroupMessageAsync(Group, new IMessageBase[]
                                 {

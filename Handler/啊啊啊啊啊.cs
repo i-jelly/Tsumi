@@ -22,7 +22,7 @@ namespace Tsuki.Handler
         {
             if(new Random().Next(100) > 49)
             {
-                await Image.SendPictureAsync(session, e, @"C:\Users\Mythra\Desktop\image\sp\43.gif");
+                await Image.SendPictureAsync(session, e, @"C:\Users\Mythra\Desktop\image\sp\-4993bbe379b63ac3.jpg");
 
                 Log.Logger($"=>, SendShitPicAtGroup#{e.Sender.Group.Name}#,WithOrderFrom@{e.Sender.Name}", "M");
             }

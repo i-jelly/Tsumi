@@ -14,7 +14,7 @@ namespace Tsuki
     public class Program
     {
 
-        private static readonly long[] Group = { 671735106, 681344436, 209010051, 690847678, 579934839 };
+        private static readonly long[] Group = { 671735106, 681344436, 209010051, 690847678, 579934839, 963031509 };
 
         public static async Task Main(string[] args)
         {
