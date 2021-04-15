@@ -26,7 +26,7 @@ namespace Tsuki.Handler
             Thread.Sleep(1000);
             await session.SendGroupMessageAsync(e.Member.Group.Id, new IMessageBase[]
             {
-                new PlainMessage("呐呐呐 新人呢www欢迎~\n咱叫月升娘,主人是月父~请多指教~"),
+                new PlainMessage("呐呐呐 新人呢www欢迎~\n咱叫月升娘,主人是彗星~请多指教~"),
             });
             return true;
         }

@@ -185,7 +185,7 @@ namespace Tsuki.Controller
             }
             
             //无意义的随机回复
-            if (new Random().Next(100) > 94)
+            if (new Random().Next(100) > 98)
             {
                 await SimpleCommand.Resolve<I群消息处理接口>("随机回复").Handler(session,e);
                 return true;
@@ -204,21 +204,34 @@ namespace Tsuki.Controller
         /// <param name="e"></param>
         public async void  OnMQTTMessageRcivied(Object source, ElapsedEventArgs e)
         {
-            Task.Run(async () => {
-                List<string> tmp = MQTT.ListenList;
+            await Task.Run(async () =>
+            {
+                List<MQTT.LiveInfo> tmp = MQTT.ListenList;
                 try
                 {
-                    if(tmp.Count() > 0)
+                    if (tmp.Count > 0)
                     {
-                        foreach(var txt in tmp)
+                        foreach (var txt in tmp)
                         {
-                            foreach(var Group in ListenGroup)
+                            foreach (var Group in ListenGroup)
                             {
-                                await SessionCache.SendGroupMessageAsync(Group, new IMessageBase[]
+                                if (txt.url.StartsWith("https://live.bilibili.com/"))
                                 {
-                                    new PlainMessage(txt)
-                                }) ;
+                                    string __ = StructMsg.Liveinfo(txt.title, txt.url);
+                                    await SessionCache.SendGroupMessageAsync(Group, new IMessageBase[]
+                                    {
+                                        new AppMessage(StructMsg.Liveinfo(txt.title,txt.url))
+                                    }) ;
+                                }
+                                else
+                                {
+                                    await SessionCache.SendGroupMessageAsync(Group, new IMessageBase[]
+                                    {
+                                        new PlainMessage(txt.name + "开播辣\n" + txt.title + "\n" + "地址:" + txt.url)
+                                    });
+                                }
                             }
+                                       
                         }
                         MQTT.ListenList.Clear();
                     }
@@ -226,8 +239,8 @@ namespace Tsuki.Controller
                 }
                 catch
                 {
-                    Log.Logger("直播提示发送错误一次", "E");
-                    return;
+                   Log.Logger("直播提示发送错误一次", "E");
+                  return;
                 }
             });
             
