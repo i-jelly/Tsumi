@@ -30,12 +30,14 @@ namespace Tsuki.Controller
         /// <summary>
         /// 主动发送信息的群号
        /// </summary>
-        private static readonly long[] ListenGroup = { 681344436,671735106, 579934839, 690847678,1081164773, 963031509 };
+        private static readonly long[] ListenGroup = { 681344436,671735106, 579934839, 690847678,1081164773, 963031509, 965594468, 807743485 };
         /// <summary>
         /// 模糊匹配使用正则表达式作为输入
         /// </summary>
         private static readonly String[] FuzCommandList = { @"全都要", @"啊{5,}",@"真理",@"涩图",@"冲了",@"社保",@"射爆"};
         private MiraiHttpSession SessionCache;
+
+        public static Dictionary<int, List<IMessageBase>> tree = new();
 
         public UnityContainer AtCommand = new UnityContainer();
         public UnityContainer SimpleCommand = new UnityContainer();
@@ -99,11 +101,14 @@ namespace Tsuki.Controller
                 Group.Add(_SenderGroup, Tmp);
             }
 /****************************************************************************************************/
-            List<IMessageBase> _chain = new List<IMessageBase> { };
+            List<IMessageBase> _chain = new() { };
+
+            //(SourceMessage)e.Chain[0];
             foreach (var Instance in e.Chain)
             {
                 if (Instance.Type != "Source") _chain.Add(Instance);
             }
+            tree.Add(((SourceMessage)e.Chain[0]).Id, _chain);
 
             IMessageBase[] _ = _chain.ToArray();
             //风怒复读机部分/优先级比普通复读机高,为防止傻逼触发我不知道的feature
@@ -198,12 +203,18 @@ namespace Tsuki.Controller
         /*******************************************************************************************/
         /// <summary>
         /// 群消息的主动发送部分, 发送MQTT消息队列
-        /// 每秒调用
+        /// 每5秒调用
         /// </summary>
         /// <param name="source"></param>
         /// <param name="e"></param>
         public async void  OnMQTTMessageRcivied(Object source, ElapsedEventArgs e)
         {
+            while(tree.Count > 200)
+            {
+
+                int _ = tree.Keys.ToList().Min();
+                if (tree.ContainsKey(_)) tree.Remove(_);
+            }
             await Task.Run(async () =>
             {
                 List<MQTT.LiveInfo> tmp = MQTT.ListenList;
@@ -215,7 +226,7 @@ namespace Tsuki.Controller
                         {
                             foreach (var Group in ListenGroup)
                             {
-                                if (txt.url.StartsWith("https://live.bilibili.com/"))
+                                if (txt.url.StartsWith("https://live.bilibili.com/") && txt.url.Contains("22820381"))
                                 {
                                     string __ = StructMsg.Liveinfo(txt.title, txt.url);
                                     await SessionCache.SendGroupMessageAsync(Group, new IMessageBase[]

@@ -14,7 +14,7 @@ namespace Tsuki
     public class Program
     {
 
-        private static readonly long[] Group = { 671735106, 681344436, 209010051, 690847678, 579934839, 963031509 };
+        private static readonly long[] Group = { 671735106, 681344436, 209010051, 690847678, 579934839, 963031509, 965594468, 807743485 };
 
         public static async Task Main(string[] args)
         {
@@ -26,8 +26,10 @@ namespace Tsuki
             群消息事件 plugin = new 群消息事件();
             机器人登录事件 Login = new 机器人登录事件();
             群成员增加 Join = new 群成员增加();
+            群消息撤回事件 Revoke = new 群消息撤回事件();
             session.AddPlugin(plugin);
             session.AddPlugin(Join);
+            session.AddPlugin(Revoke);
             session.BotOnlineEvt += Login.BotOnline;
 
 

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Tsuki.Interface;
 using Tsuki.Model;
@@ -18,9 +19,13 @@ namespace Tsuki.Controller
         {
             FileInfo[] Files = new DirectoryInfo(@"C:\Users\Mythra\Desktop\image\pixiv\").GetFiles();
 
-            await Image.SendPictureAsync(session, e, @"C:\Users\Mythra\Desktop\image\pixiv\" + Files[rg.Next(Files.Length)].Name);
-
             Log.Logger($"=>, SendEroImageAtGroup#{e.Sender.Group.Name}#,WithOrderFrom@{e.Sender.Name}","M");
+            int i = await Task.Run(() =>
+            {
+                return Image.SendPictureAsync(session, e, @"C:\Users\Mythra\Desktop\image\pixiv\" + Files[rg.Next(Files.Length)].Name);
+            });
+            Thread.Sleep(10000);
+            await session.RevokeMessageAsync(i);
         }
     }
 }

@@ -47,6 +47,15 @@ namespace Tsuki.Model
             Tim.Start();
         }
 
-        
+        /// <summary>
+        /// 获取当前时间的Unix时间戳
+        /// </summary>
+        /// <returns></returns>
+        public static long GetCurrentUnixTimeStamp()
+        {
+            return ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
+        }
+
+
     }
 }
