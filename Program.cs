@@ -23,13 +23,13 @@ namespace Tsuki
             MiraiHttpSessionOptions options = new MiraiHttpSessionOptions("up.kizunaai.top", 23333, "1145141919810");
             await using MiraiHttpSession session = new MiraiHttpSession();
 
-            群消息事件 plugin = new 群消息事件();
-            机器人登录事件 Login = new 机器人登录事件();
-            群成员增加 Join = new 群成员增加();
-            群消息撤回事件 Revoke = new 群消息撤回事件();
+            群消息事件 plugin = new();
+            机器人登录事件 Login = new();
+            群成员增加 Join = new();
+            //群消息撤回事件 Revoke = new();
             session.AddPlugin(plugin);
             session.AddPlugin(Join);
-            session.AddPlugin(Revoke);
+            //session.AddPlugin(Revoke);
             session.BotOnlineEvt += Login.BotOnline;
 
 

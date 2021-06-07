@@ -43,7 +43,7 @@ namespace Tsuki.Model
         /// <param name="e"></param>
         private void OnReciveMessage(Object sender, MqttMsgPublishEventArgs e)
         {
-            String json = Encoding.ASCII.GetString(e.Message);
+            string json = Encoding.ASCII.GetString(e.Message);
 
             LiveInfo info = JsonConvert.DeserializeObject<LiveInfo>(json);
             if (ListenList.Contains(info)) return;

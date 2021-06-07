@@ -37,7 +37,7 @@ namespace Tsuki.Model
         /// </summary>
         public void Init()
         {
-            Tim = new Timer(5000)
+            Tim = new Timer(10000)
             {
                 AutoReset = true,
                 Enabled = true ,
